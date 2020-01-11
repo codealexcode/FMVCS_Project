@@ -3,12 +3,10 @@ import java.util.Random;
 public class patientTask implements Runnable {
 
     private int taskId;
-    private Patient patient;
     private Hospital hospital;
 
-    public patientTask(int taskId, Patient patient,  Hospital hospital){
+    public patientTask(int taskId, Hospital hospital){
         this.taskId = taskId;
-        this.patient = patient;
         this.hospital = hospital;
     }
 
@@ -19,15 +17,15 @@ public class patientTask implements Runnable {
 
         while(!checkout){
             // fill paper
-            if(this.hospital.getAvailableNursesNurses().size() > 0){
+            if(this.hospital.getAvailableNursesNurses() > 0){
                 fillPaper();
                 while(!checkout){
                     // enter room
-                    if(this.hospital.getAvailableExaminingRooms().size() >  0){
+                    if(this.hospital.getAvailableExaminingRooms() >  0){
                         enterRoom();
                         while(!checkout){
                             //treatment
-                            if(this.hospital.getAvailableDoctors().size() > 0){
+                            if(this.hospital.getAvailableDoctors() > 0){
                                 treatment();
                                 checkout = checkout();
                             }
@@ -44,28 +42,28 @@ public class patientTask implements Runnable {
     }
 
     private void fillPaper(){
-        this.hospital.getAvailableNursesNurses().remove(0);
+        this.hospital.decreaseAvailableNurse();
         printHospital("FILL PAPER");
         sleep(4000);
-        this.hospital.getAvailableNursesNurses().add(new Nurse());
+        this.hospital.increaseAvailableNurse();
         printHospital("CHECK PAPER");
     }
 
     private void enterRoom(){
-        this.hospital.getAvailableExaminingRooms().remove(0);
+        this.hospital.decreaseAvailableRooms();
         printHospital("ENTER ROOM");
     }
 
     private void treatment(){
-        this.hospital.getAvailableDoctors().remove(0);
+        this.hospital.decreaseAvailableDoctors();
         printHospital("TREATMENT");
         sleep(8000);
     }
 
     private boolean checkout(){
-        this.hospital.getAvailableExaminingRooms().add(new ExaminingRoom());
-        this.hospital.getAvailableDoctors().add(new Doctor());
-        this.hospital.getPatients().remove(0);
+        this.hospital.increaseAvailableRooms();
+        this.hospital.increaseAvailableDoctors();
+        this.hospital.decreasePatients();
         printHospital("CHECKOUT");
         return true;
     }
@@ -81,9 +79,9 @@ public class patientTask implements Runnable {
     private void printHospital(String action){
         System.out.flush();
         System.out.println("HOSPITAL - TASK: " + this.taskId + " - ACTION: " + action);
-        System.out.println("PATIENTS INSIDE: " + this.hospital.getPatients().size());
-        System.out.println("AVAILABLE NURSES: " + this.hospital.getAvailableNursesNurses().size());
-        System.out.println("AVAILABLE DOCTORS: " + this.hospital.getAvailableDoctors().size());
-        System.out.println("AVAILABLE ROOMS: " + this.hospital.getAvailableExaminingRooms().size());
+        System.out.println("PATIENTS INSIDE: " + this.hospital.getPatients());
+        System.out.println("AVAILABLE NURSES: " + this.hospital.getAvailableNursesNurses());
+        System.out.println("AVAILABLE DOCTORS: " + this.hospital.getAvailableDoctors());
+        System.out.println("AVAILABLE ROOMS: " + this.hospital.getAvailableExaminingRooms());
     }
 }
