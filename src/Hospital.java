@@ -7,14 +7,16 @@ public class Hospital {
     private int availableExaminingRooms;
     private int availableReceptionists;
     private int patients;
+    private RessourceProvider ressourceProvider;
 
     // CONSTRUCTOR
-    public Hospital(){
+    public Hospital(RessourceProvider ressourceProvider){
         this.availableNurses = 5;
         this.availableDoctors = 5;
         this.availableExaminingRooms = 10;
         this.availableReceptionists = 2;
         this.patients = 0;
+        this.ressourceProvider = ressourceProvider;
     }
 
     // GETTERS
@@ -47,7 +49,7 @@ public class Hospital {
         boolean run = true;
 
         while (run){
-            //System.out.println("HOSPITAL IS RUNNING");
+            /*
             sleep(1000);
             if(start) {
                 // 2 patients arrive
@@ -58,6 +60,8 @@ public class Hospital {
                 startNewPatientTask(patientCounter, this);
                 start = false;
             }
+            */
+
         }
     }
 
